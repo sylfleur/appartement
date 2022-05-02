@@ -24,6 +24,7 @@ class _CreateState extends State<Create> {
 
   // bool ifu = true;
   dynamic _ifu = '';
+  late Future<Proprietaire> _futureProprietaire;
 
   @override
   void initState() {
@@ -98,7 +99,12 @@ class _CreateState extends State<Create> {
                   ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {}
-                      setState(() {});
+                      setState(
+                        () {
+                          _futureProprietaire = createProprietaire(nom, prenom, telephone, false);
+                          print(_futureProprietaire);
+                        },
+                      );
                       //Navigator.pop(context);
                     },
                     child: Text('Save'),
@@ -106,12 +112,12 @@ class _CreateState extends State<Create> {
                 ],
               ),
             ),
-            Text(nom),
-            Text(prenom),
-            Text(telephone),
-            Text(              
-              '${ifu == 1 ? true : false}',
-            ),
+            // Text(nom),
+            // Text(prenom),
+            // Text(telephone),
+            // Text(
+            //   '${ifu == 1 ? true : false}',
+            // ),
           ],
         ),
       ),
@@ -132,10 +138,10 @@ Future<Proprietaire> createProprietaire(
       "telephone": telephone,
       "disposeIfu": ifu,
     }),
-  ); 
+  );
   if (response.statusCode == 201) {
     return Proprietaire.fromJson(json.decode(response.body));
   } else {
-    throw Exception('Failed to load post');
+    throw Exception(response.body);
   }
 }
