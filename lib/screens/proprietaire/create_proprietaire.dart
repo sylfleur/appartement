@@ -1,11 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:convert';
-
-import 'package:crud_rest/env.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
+import '../../controller/proprietaire.dart';
 import '../../models/proprietaire.dart';
 
 class Create extends StatefulWidget {
@@ -16,6 +13,7 @@ class Create extends StatefulWidget {
 }
 
 class _CreateState extends State<Create> {
+  ProprietaireController proprietaireController = ProprietaireController();
   final _formKey = GlobalKey<FormState>();
 
   final nomController = TextEditingController();
@@ -26,7 +24,6 @@ class _CreateState extends State<Create> {
   // bool ifu = true;
   dynamic _ifu = '';
   late Future<Proprietaire> _futureProprietaire;
-  List<int> maison = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   @override
   void initState() {
@@ -106,14 +103,12 @@ class _CreateState extends State<Create> {
                       },
                     ),
                   ),
-                  _buildList(10),
                   ListTile(
                     leading: const Icon(Icons.home),
                     title: Text('Maison'),
                     trailing: IconButton(
                       icon: Icon(Icons.add),
-                      onPressed: () {           
-
+                      onPressed: () {
                         // Navigator.push(
                         //   context,
                         //   MaterialPageRoute(
@@ -129,7 +124,8 @@ class _CreateState extends State<Create> {
                       setState(
                         () {
                           _futureProprietaire =
-                              createProprietaire(nom, prenom, telephone, false);
+                              proprietaireController.createProprietaire(
+                                  nom, prenom, telephone, false);
                           //    print(_futureProprietaire);
                         },
                       );
@@ -153,30 +149,23 @@ class _CreateState extends State<Create> {
   }
 }
 
-
-Future<Proprietaire> createProprietaire(
-    String nom, String prenom, String telephone, bool ifu) async {
-  final response = await http.post(
-    Uri.parse(Env.apiUrl + '/proprietaire'),
-    headers: <String, String>{
-      'content-type': 'application/json; charset=UTF-8',
-    },
-    body: jsonEncode(<String, dynamic>{
-      "nom": nom,
-      "prenom": prenom,
-      "telephone": telephone,
-      "disposeIfu": ifu,
-    }),
-  );
-  if (response.statusCode == 201) {
-    return Proprietaire.fromJson(json.decode(response.body));
-  } else {
-    throw Exception(response.body);
-  }
-}
-
-Widget _buildList(maison) {
-  return ListView.builder(itemCount: maison.length, itemBuilder: (context, index) {
-    return ListTile(
-      title: Text('maison[index].nom'),  );
-  });}
+// Future<Proprietaire> createProprietaire(
+//     String nom, String prenom, String telephone, bool ifu) async {
+//   final response = await http.post(
+//     Uri.parse(Env.apiUrl + '/proprietaire'),
+//     headers: <String, String>{
+//       'content-type': 'application/json; charset=UTF-8',
+//     },
+//     body: jsonEncode(<String, dynamic>{
+//       "nom": nom,
+//       "prenom": prenom,
+//       "telephone": telephone,
+//       "disposeIfu": ifu,
+//     }),
+//   );
+//   if (response.statusCode == 201) {
+//     return Proprietaire.fromJson(json.decode(response.body));
+//   } else {
+//     throw Exception(response.body);
+//   }
+// }
