@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 
-import 'create.dart';
-import 'read.dart';
+import 'proprietaire/create_proprietaire.dart';
+import 'proprietaire/read.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);

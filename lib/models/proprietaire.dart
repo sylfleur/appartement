@@ -38,3 +38,4 @@ class Proprietaire {
         // this.telephone,
         // this.disposeIfu,
         // this.maison,
+
